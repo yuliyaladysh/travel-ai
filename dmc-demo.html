@@ -1,0 +1,254 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>DMC Agent House</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: X Factor navy. Hero, then a live "control room": agent team | board | owner's phone, with a step ticker under it. Single dark look by choice. */
+:root{
+  color-scheme:dark;
+  --deep:#050b16; --navy:#101724; --panel:#162033; --panel2:#1b2740; --line:#26324a;
+  --cream:#F1EDE4; --muted:#9aa5b8; --orange:#E96B12; --amber:#ffab52; --ember:#c1321a; --ok:#4fc08d;
+  --display:"Instrument Serif",Georgia,serif; --body:"Instrument Sans",system-ui,sans-serif; --mono:"Space Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--deep);color:var(--cream);font:16px/1.55 var(--body);overflow-x:hidden}
+.band{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.in{max-width:1180px;margin:0 auto}
+.hero{padding-block:44px 28px;background:radial-gradient(100% 90% at 85% 0%,#1d2a45 0%,var(--navy) 50%,var(--deep) 100%);position:relative;overflow:hidden}
+.glow{position:absolute;width:480px;height:480px;right:-120px;top:-170px;border-radius:50%;background:radial-gradient(circle,rgba(233,107,18,.32),transparent 65%);animation:drift 14s ease-in-out infinite alternate;pointer-events:none}
+@keyframes drift{to{transform:translate(-70px,50px) scale(1.12)}}
+.hero .in{position:relative;display:grid;gap:14px}
+.brand{display:flex;gap:10px;align-items:center;font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.brand svg{width:32px;height:32px}
+.eyebrow{font:400 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+h1{font:400 clamp(38px,7vw,72px)/1.02 var(--display);margin:0;text-wrap:balance;max-width:18ch}
+h1 i{background:linear-gradient(100deg,var(--amber),var(--orange) 55%,var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{margin:0;max-width:60ch;color:#d5d9e2;font-size:1.08rem}
+.note{font:400 12px var(--mono);color:var(--muted)}
+
+/* control room */
+.room{padding-block:24px 40px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+button{font:700 13px var(--mono);border-radius:999px;padding:9px 16px;border:1px solid var(--line);background:var(--panel);color:var(--cream);cursor:pointer}
+button.primary{background:var(--orange);border-color:var(--orange);color:var(--navy)}
+button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.clock{margin-left:auto;font:700 14px var(--mono);color:var(--amber);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:260px minmax(0,1fr) 270px;gap:14px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}.phonecol{grid-column:1/-1}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.ph{font:700 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+
+.agents{display:grid;gap:8px}
+.agent{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;padding:8px;border-radius:10px;border:1px solid transparent;transition:background .3s,border-color .3s}
+.agent .ic{width:34px;height:34px;border-radius:9px;background:var(--panel2);display:grid;place-items:center;font:700 12px var(--mono);color:var(--amber)}
+.agent b{display:block;font-weight:600;font-size:.95rem}
+.agent small{color:var(--muted);font-size:.8rem;display:block}
+.agent.on{background:rgba(233,107,18,.1);border-color:rgba(233,107,18,.55)}
+.agent.on .ic{background:var(--orange);color:var(--navy);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(233,107,18,.18)}}
+
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-height:240px}
+@media (max-width:640px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.col{background:var(--navy);border:1px solid var(--line);border-radius:10px;padding:8px;display:grid;align-content:start;gap:8px;min-width:0}
+.col h4{margin:0;font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.col.wait h4{color:var(--amber)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px;display:grid;gap:4px;animation:pop .45s cubic-bezier(.2,.8,.2,1)}
+.card b{font-size:.88rem;font-weight:600}
+.card small{color:var(--muted);font-size:.76rem}
+.card .chip{justify-self:start;font:700 10px var(--mono);padding:2px 7px;border-radius:999px;background:rgba(255,171,82,.15);color:var(--amber)}
+.col.done .card .chip{background:rgba(79,192,141,.15);color:var(--ok)}
+@keyframes pop{from{transform:scale(.92);opacity:.3}to{transform:none;opacity:1}}
+.feed{margin-top:12px;display:grid;gap:6px;max-height:190px;overflow:auto}
+.line{display:grid;grid-template-columns:52px 1fr;gap:8px;font-size:.86rem;animation:pop .4s}
+.line span{font:400 11px var(--mono);color:var(--muted);padding-top:2px}
+.line b{color:var(--amber);font-weight:600}
+
+/* phone */
+.phone{width:100%;max-width:250px;margin:0 auto;aspect-ratio:9/17;border-radius:32px;border:2px solid #33405A;background:#0a1120;padding:14px 12px;display:grid;grid-template-rows:auto 1fr;gap:10px;box-shadow:0 30px 60px -30px rgba(233,107,18,.45)}
+.notch{width:70px;height:6px;border-radius:9px;background:#26324a;margin:0 auto}
+.screen{display:grid;align-content:start;gap:8px;overflow:hidden}
+.msg{background:var(--panel2);border-radius:12px;padding:9px 10px;font-size:.8rem;animation:pop .4s}
+.msg .from{font:700 10px var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:3px}
+.approve{border:1px solid var(--orange);background:rgba(233,107,18,.08)}
+.approve .btns{display:flex;gap:6px;margin-top:8px}
+.approve .btns span{flex:1;text-align:center;font:700 11px var(--mono);padding:6px;border-radius:8px;border:1px solid var(--line)}
+.approve .btns .yes{background:var(--orange);color:var(--navy);border-color:var(--orange)}
+.approve.tapped .yes{animation:tap .6s}
+@keyframes tap{40%{transform:scale(.9);box-shadow:0 0 0 8px rgba(233,107,18,.25)}}
+.done-msg{border:1px solid rgba(79,192,141,.5)}
+
+/* ticker + stats */
+.ticker{margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+@media (max-width:640px){.ticker{grid-template-columns:1fr}}
+.say{font:400 clamp(20px,3.2vw,28px)/1.2 var(--display);margin:0;min-height:2.4em}
+.say i{color:var(--orange)}
+.stats{display:flex;gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:right}
+.stat b{display:block;font:400 30px/1 var(--display);color:var(--amber);font-variant-numeric:tabular-nums}
+.stat small{font:400 10px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.dots{display:flex;gap:6px;margin-top:10px}
+.dots i{width:22px;height:4px;border-radius:9px;background:var(--line);transition:background .3s}
+.dots i.on{background:var(--orange)}
+
+/* why section */
+.why{padding-block:40px;background:var(--navy)}
+.why h2{font:400 clamp(30px,5vw,44px)/1.05 var(--display);margin:0 0 18px;text-wrap:balance}
+.why h2 i{color:var(--orange)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.three{grid-template-columns:1fr}}
+.three div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:6px}
+.three b{font:400 1.5rem/1.15 var(--display)}
+.three p{margin:0;color:#cfd4de;font-size:.95rem}
+
+.xf-stamp{background:#101724;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.xf-stamp .in{max-width:880px;display:grid;gap:12px}
+.xf-row{display:flex;align-items:center;gap:10px;font:700 13px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.xf-row svg{width:28px;height:28px}
+.xf-hook{margin:0;font:400 clamp(22px,4.5vw,28px)/1.2 var(--display);color:#fff}
+.xf-hook i{color:var(--orange)}
+.xf-links{display:flex;flex-wrap:wrap;gap:8px}
+.xf-links a{font:700 13px var(--mono);border-radius:999px;padding:8px 14px;text-decoration:none;background:var(--orange);color:var(--navy)}
+.xf-links a.alt{background:transparent;border:1px solid #33405A;color:var(--cream)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<header class="hero band">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="in">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16" stroke="#26324a"/><path d="M8 8 L24 24" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/></svg>X Factor AI × Home of Agents</div>
+    <span class="eyebrow">A Cape Town DMC's agent team · concept wireframe</span>
+    <h1>The Moscow request came in at 21:40. <i>The proposal was ready by breakfast.</i></h1>
+    <p class="lede">A team of AI agents that works through the night for a destination management company (DMC): it reads a travel agency's request, builds the itinerary, checks the lodges, prices it and drafts the proposal in Russian. Then, once the agency says yes, it handles the lodge invoices and proofs of payment. The owner approves every step with one tap on their phone. Press play and watch one request go from the first email to guests on the ground.</p>
+    <span class="note">Example agency, prices and lodges. Agents never send, book or pay without a person's yes.</span>
+  </div>
+</header>
+
+<section class="room band">
+  <div class="in">
+    <div class="controls">
+      <button class="primary" id="play" type="button">▶ Play</button>
+      <button id="next" type="button">Next step</button>
+      <button id="reset" type="button">Start again</button>
+      <span class="clock" id="clock">Mon 21:40</span>
+    </div>
+    <div class="grid">
+      <div class="panel">
+        <p class="ph">The agent team</p>
+        <div class="agents" id="agents"></div>
+      </div>
+      <div class="panel">
+        <p class="ph">The board</p>
+        <div class="board">
+          <div class="col" id="c-new"><h4>New</h4></div>
+          <div class="col" id="c-work"><h4>Agents working</h4></div>
+          <div class="col wait" id="c-wait"><h4>Waiting for you</h4></div>
+          <div class="col done" id="c-done"><h4>Done</h4></div>
+        </div>
+        <div class="feed" id="feed" aria-live="polite"></div>
+      </div>
+      <div class="panel phonecol">
+        <p class="ph">The owner's phone</p>
+        <div class="phone"><div class="notch"></div><div class="screen" id="screen"></div></div>
+      </div>
+    </div>
+    <div class="ticker">
+      <div><p class="say" id="say"></p><div class="dots" id="dots"></div></div>
+      <div class="stats">
+        <div class="stat"><b id="hrs">0.0</b><small>Hours saved</small></div>
+        <div class="stat"><b id="taps">0</b><small>Owner taps</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why band">
+  <div class="in">
+    <h2>What this means for <i>a DMC</i></h2>
+    <div class="three">
+      <div><b>No request waits</b><p>Agencies in Moscow, London or Hamburg write in their evening. Their proposal is ready before other DMCs have opened their inbox.</p></div>
+      <div><b>The back office runs itself</b><p>Lodge invoices get filed by project, finance is pinged and proof of payment goes back to the lodge. Nobody chases paperwork.</p></div>
+      <div><b>Their knowledge, kept</b><p>Past itineraries, lodge contracts, rates and photos live in one memory. It keeps working when a travel designer leaves.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="xf-stamp band" aria-label="Made by X Factor AI">
+  <div class="in">
+    <div class="xf-row"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="xf-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16"/><path d="M8 8 L24 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/></svg>Built by X Factor AI</div>
+    <p class="xf-hook">AI that takes the weight off people. <i>This page was made with it.</i></p>
+    <div class="xf-links"><a href="https://www.x-factorai.com/">Bring me the problem →</a><a class="alt" href="https://www.linkedin.com/in/kevinfactor/">See how Kevin does it</a></div>
+  </div>
+</footer>
+
+<script>
+const AGENTS=[
+  {id:"req",ic:"IN",name:"Request reader",job:"Reads agency requests, any language"},
+  {id:"iti",ic:"MAP",name:"Itinerary builder",job:"Starts from trips you already sold"},
+  {id:"sup",ic:"BED",name:"Lodge checker",job:"Checks availability, drafts holds"},
+  {id:"quo",ic:"$",name:"Quote + proposal",job:"Your margins, their language, right photos"},
+  {id:"chk",ic:"✓",name:"Quote checker",job:"Second pair of eyes on every quote"},
+  {id:"inv",ic:"INV",name:"Invoice clerk",job:"Files invoices, pings finance, returns proof"},
+  {id:"crd",ic:"GO",name:"Trip coordinator",job:"Transfers and guides, every morning"}
+];
+const T="Moscow agency · 3 clients";
+const STEPS=[
+  {t:"Mon 21:40",on:[],say:"A request arrives from a travel agency in Moscow, in Russian. <i>The Cape Town office closed hours ago.</i>",
+   card:["c-new",T,"Email · Russian","new"],log:["21:40","New request from a Moscow agency."],hrs:0,ph:[]},
+  {t:"Mon 21:41",on:["req"],say:"The request reader pulls out what matters: <i>3 clients, Victoria Falls and safari, 10 days, about $30,000.</i>",
+   card:["c-work",T,"Brief · 3 adults · May 2027 · $30k","sorted"],log:["21:41","<b>Request reader</b>: 3 adults, 10 days, Victoria Falls + safari, budget $30k."],hrs:.4,ph:[]},
+  {t:"Mon 21:50",on:["iti"],say:"The itinerary builder drafts a route from trips this DMC <i>has already sold to Russian clients.</i>",
+   card:["c-work",T,"Cape Town 3 · Victoria Falls 3 · Chobe 4","itinerary"],log:["21:50","<b>Itinerary</b>: 3 nights Cape Town, 3 Victoria Falls, 4 Chobe."],hrs:1.4,ph:[]},
+  {t:"Mon 22:20",on:["sup"],say:"The lodge checker writes to four lodges. One is full, <i>so it proposes the DMC's usual alternative.</i>",
+   card:["c-work",T,"3 lodges free · 1 swapped · holds drafted","lodges"],log:["22:20","<b>Lodge checker</b>: Chobe lodge full; alternative offered. Holds drafted, not sent."],hrs:2.4,ph:[]},
+  {t:"Mon 23:05",on:["quo","chk"],say:"Quote and proposal are drafted in Russian, then checked. The checker <i>adds the park fees and the Kasane transfer.</i>",
+   card:["c-work",T,"$28,950 · proposal in Russian · checked","quote"],log:["23:05","<b>Quote checker</b>: added park fees + Kasane transfer. Margin OK. Total $28,950."],hrs:4.1,ph:[]},
+  {t:"Tue 07:10",on:[],say:"At breakfast the owner gets one card: <i>proposal ready to send to the agency.</i>",
+   card:["c-wait",T,"Send proposal to agency?","your call"],log:["07:10","Approval card sent to the owner's phone."],hrs:4.1,
+   ph:[["approve","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approve"]]},
+  {t:"Tue 07:12",on:["sup"],say:"One tap. The proposal goes to Moscow and <i>the lodge holds go out.</i>",
+   card:["c-work",T,"Sent 07:12 · holds sent","sent"],log:["07:12","Proposal sent to agency. Holds sent to 4 lodges."],hrs:4.4,taps:1,
+   ph:[["approve tapped","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approved ✓"]]},
+  {t:"Thu 11:20",on:["req"],say:"The agency replies: <i>«Клиенты согласны»</i>, the clients agree. Lodge payments are queued for a yes.",
+   card:["c-wait",T,"Confirmed · pay 4 lodges?","your call"],log:["11:20","Agency confirmed. 4 lodge payments queued for approval."],hrs:4.8,taps:1,
+   ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approve"]]},
+  {t:"Thu 15:00",on:["inv"],say:"Lodge invoices arrive. The invoice clerk files them by project, pings finance, <i>and sends each proof of payment back.</i>",
+   card:["c-work",T,"4 invoices filed · 4 proofs returned","paid"],log:["15:00","<b>Invoice clerk</b>: 4 invoices filed, finance pinged on WhatsApp, proofs emailed to lodges."],hrs:6.3,taps:2,
+   ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve tapped","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approved ✓"]]},
+  {t:"May 2027",on:["crd"],say:"The guests land. The coordinator checks every transfer and guide <i>each morning, and the trip goes back into memory.</i>",
+   card:["c-done",T,"Trip complete · back in memory","done"],log:["May","<b>Coordinator</b>: all transfers confirmed. Trip saved for the next proposal."],hrs:7.5,taps:2,
+   ph:[["done-msg","Trip complete","3 clients home safe. The agency asks for a repeat in October.",""]]}
+];
+const $=id=>document.getElementById(id);
+let i=-1,timer=null;
+function drawAgents(on){$("agents").innerHTML=AGENTS.map(a=>`<div class="agent${on.includes(a.id)?" on":""}"><span class="ic">${a.ic}</span><div><b>${a.name}</b><small>${a.job}</small></div></div>`).join("")}
+function drawDots(){$("dots").innerHTML=STEPS.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}
+function phone(list){
+  let h=`<div class="msg"><span class="from">Your agents</span>1 agency request is being worked on.</div>`;
+  (list||[]).forEach(([cls,from,txt,btn])=>{
+    h+=`<div class="msg ${cls}"><span class="from">${from}</span>${txt}${btn?`<div class="btns"><span class="yes">${btn}</span><span>Edit</span></div>`:""}</div>`;
+  });
+  $("screen").innerHTML=h;
+}
+function show(k){
+  i=k;const st=STEPS[k];
+  $("clock").textContent=st.t;$("say").innerHTML=st.say;
+  ["c-new","c-work","c-wait","c-done"].forEach(c=>{const col=$(c);col.querySelectorAll(".card").forEach(x=>x.remove())});
+  const [col,title,sub,chip]=st.card;
+  $(col).insertAdjacentHTML("beforeend",`<div class="card"><span class="chip">${chip}</span><b>${title}</b><small>${sub}</small></div>`);
+  drawAgents(st.on);
+  $("feed").insertAdjacentHTML("afterbegin",`<div class="line"><span>${st.log[0]}</span><div>${st.log[1]}</div></div>`);
+  $("hrs").textContent=st.hrs.toFixed(1);$("taps").textContent=st.taps||STEPS.slice(0,k+1).reduce((m,s)=>Math.max(m,s.taps||0),0);
+  phone(st.ph);
+  drawDots();
+}
+function stop(){clearInterval(timer);timer=null;$("play").textContent="▶ Play"}
+function next(){if(i<STEPS.length-1)show(i+1);else stop()}
+function reset(){stop();$("feed").innerHTML="";show(0)}
+$("play").onclick=()=>{if(timer){stop();return}if(i>=STEPS.length-1)reset();$("play").textContent="❚❚ Pause";timer=setInterval(next,3200)};
+$("next").onclick=()=>{stop();next()};
+$("reset").onclick=reset;
+reset();
+</script>
+
+</body></html>
