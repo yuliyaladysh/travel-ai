@@ -105,19 +105,26 @@ button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .tabs button{border-radius:999px;padding:8px 14px;font:700 13px var(--mono);background:transparent;border:1px solid #33405A;color:var(--cream);cursor:pointer}
 .tabs button.on{background:var(--orange);border-color:var(--orange);color:var(--navy)}
 
-.xf-stamp{background:#101724;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
-.xf-stamp .in{max-width:880px;display:grid;gap:12px}
-.xf-row{display:flex;align-items:center;gap:10px;font:700 13px var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.xf-row svg{width:28px;height:28px}
-.xf-hook{margin:0;font:400 clamp(22px,4.5vw,28px)/1.2 var(--display);color:#fff}
-.xf-hook i{color:var(--orange)}
-.xf-links{display:flex;flex-wrap:wrap;gap:8px}
-.xf-links a{font:700 13px var(--mono);border-radius:999px;padding:8px 14px;text-decoration:none;background:var(--orange);color:var(--navy)}
-.xf-links a.alt{background:transparent;border:1px solid #33405A;color:var(--cream)}
+.topbar{padding:14px 16px 0}
+.back{display:inline-block;text-decoration:none;font:700 13px var(--mono);border-radius:999px;padding:8px 14px;border:1px solid #33405A;color:var(--cream)}
+.back:hover{border-color:var(--orange);color:var(--orange)}
+.xf-stamp{background:#101724;color:#F1EDE4;margin-top:40px;padding-block:28px calc(28px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.xf-stamp .xf-in{max-width:720px;margin:0 auto;display:grid;gap:14px}
+.xf-stamp .xf-row{display:flex;align-items:center;gap:10px}
+.xf-stamp svg{width:28px;height:28px;flex:none}
+.xf-stamp .xf-name{font:700 13px/1 "Space Mono",ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#F1EDE4}
+.xf-stamp .xf-hook{margin:0;font:400 clamp(22px,5vw,28px)/1.2 "Instrument Serif",Georgia,serif;color:#FFFFFF;max-width:32ch;text-wrap:balance}
+.xf-stamp .xf-hook i{color:#E96B12}
+.xf-stamp .xf-links{display:flex;flex-wrap:wrap;gap:8px}
+.xf-stamp a{font:700 13px "Space Mono",ui-monospace,Consolas,monospace;border-radius:999px;padding:7px 14px;text-decoration:none;background:#E96B12;color:#101724}
+.xf-stamp a:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
+.xf-stamp a.alt{background:transparent;border:1px solid #33405A;color:#F1EDE4}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+
+<nav class="topbar"><a class="back" id="back" href="start.html"></a></nav>
 
 <header class="hero band">
   <div class="glow" aria-hidden="true"></div>
@@ -182,11 +189,11 @@ button:focus-visible{outline:3px solid #fff;outline-offset:2px}
   </div>
 </section>
 
-<footer class="xf-stamp band" aria-label="Made by X Factor AI">
-  <div class="in">
-    <div class="xf-row"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="xf-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16"/><path d="M8 8 L24 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/></svg><span id="built"></span></div>
-    <p class="xf-hook"><span id="hook1"></span> <i id="hook2"></i></p>
-    <div class="xf-links"><a href="https://www.x-factorai.com/" id="fa"></a><a class="alt" href="https://www.linkedin.com/in/kevinfactor/" id="fb"></a></div>
+<footer class="xf-stamp" aria-label="Made by X Factor AI">
+  <div class="xf-in">
+    <div class="xf-row"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="xf-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16"/><path d="M8 8 L24 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/></svg><span class="xf-name" id="built"></span></div>
+    <p class="xf-hook" id="fh"></p>
+    <div class="xf-links"><a href="mailto:hi@nownowtravel.net?subject=Travel%20AiGent" id="fb"></a><a class="alt" href="https://www.x-factorai.com/" target="_blank" rel="noopener" style="font-size:11px;padding:5px 10px">x-factorai.com</a></div>
   </div>
 </footer>
 
@@ -231,7 +238,7 @@ en:{
   {t:"Thu 15:00",say:"Lodge invoices arrive. The invoice clerk files them by project, pings finance, <i>and sends each proof of payment back.</i>",sub:"4 invoices filed · 4 proofs returned",log:["15:00","<b>Invoice clerk</b>: 4 invoices filed, finance pinged on WhatsApp, proofs emailed to lodges."],ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve tapped","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approved ✓"]]},
   {t:"May 2027",say:"The guests land. The coordinator checks every transfer and guide <i>each morning, and the trip goes back into memory.</i>",sub:"Trip complete · back in memory",log:["May","<b>Coordinator</b>: all transfers confirmed. Trip saved for the next proposal."],ph:[["done-msg","Trip complete","3 clients home safe. The agency asks for a repeat in October.",""]]}
  ],
- hook1:"AI that takes the weight off people.", hook2:"This page was made with it.", built:"Built by X Factor AI", fa:"Bring me the problem →", fb:"See how Kevin does it"
+ fh:"Questions? Reach out to us!", built:"Built by X Factor AI", back:"← Back", fb:"Contact us"
 },
 ru:{
  eyebrow:"Пример: DMC из Кейптауна · та же команда работает для любого туристического бизнеса",
@@ -264,7 +271,7 @@ ru:{
   {t:"Чт 15:00",say:"Приходят счета лоджей. Бухгалтер раскладывает их по проектам, сообщает финансам <i>и отправляет каждое подтверждение оплаты обратно.</i>",sub:"4 счёта разложены · 4 подтверждения отправлены",log:["15:00","<b>Бухгалтер</b>: 4 счёта разложены, финансы уведомлены в WhatsApp, подтверждения отправлены лоджам по почте."],ph:[["done-msg","Подтверждено","Московское агентство приняло. Забронировано $28 950.",""],["approve tapped","Нужна оплата","Оплатить 4 лоджам <b>$19 800</b> всего?","Одобрено ✓"]]},
   {t:"Май 2027",say:"Гости прилетели. Координатор проверяет каждый трансфер и гида <i>каждое утро, а поездка возвращается в память.</i>",sub:"Поездка завершена · сохранена в памяти",log:["Май","<b>Координатор</b>: все трансферы подтверждены. Поездка сохранена для следующего предложения."],ph:[["done-msg","Поездка завершена","3 клиента благополучно дома. Агентство просит повторить поездку в октябре.",""]]}
  ],
- hook1:"ИИ, который снимает нагрузку с людей.", hook2:"Эта страница сделана с его помощью.", built:"Создано X Factor AI", fa:"Расскажите вашу задачу →", fb:"Как это делает Kevin"
+ fh:"Есть вопросы? Напишите нам!", built:"Создано X Factor AI", back:"← Назад", fb:"Напишите нам!"
 },
 es:{
  eyebrow:"Ejemplo: un DMC de Ciudad del Cabo · el mismo equipo sirve a cualquier empresa de viajes",
@@ -297,7 +304,7 @@ es:{
   {t:"Jue 15:00",say:"Llegan las facturas de los lodges. El auxiliar las archiva por proyecto, avisa a finanzas <i>y devuelve cada comprobante de pago.</i>",sub:"4 facturas archivadas · 4 comprobantes devueltos",log:["15:00","<b>Auxiliar de facturas</b>: 4 facturas archivadas, finanzas avisadas por WhatsApp, comprobantes enviados por correo a los lodges."],ph:[["done-msg","Confirmado","La agencia de Moscú aceptó. Reservado: $28,950.",""],["approve tapped","Pago pendiente","¿Pagar a los 4 lodges <b>$19,800</b> en total?","Aprobado ✓"]]},
   {t:"Mayo 2027",say:"Los huéspedes llegan. El coordinador revisa cada traslado y guía <i>cada mañana, y el viaje vuelve a la memoria.</i>",sub:"Viaje completado · guardado en memoria",log:["Mayo","<b>Coordinador</b>: todos los traslados confirmados. Viaje guardado para la próxima propuesta."],ph:[["done-msg","Viaje completado","3 clientes llegaron bien a casa. La agencia pide repetir el viaje en octubre.",""]]}
  ],
- hook1:"IA que quita peso de las personas.", hook2:"Esta página se hizo con ella.", built:"Creado por X Factor AI", fa:"Cuénteme su problema →", fb:"Vea cómo lo hace Kevin"
+ fh:"¿Preguntas? ¡Escríbanos!", built:"Creado por X Factor AI", back:"← Volver", fb:"¡Escríbanos!"
 },
 pt:{
  eyebrow:"Exemplo: um DMC da Cidade do Cabo · a mesma equipe atende qualquer empresa de turismo",
@@ -330,7 +337,7 @@ pt:{
   {t:"Qui 15:00",say:"Chegam as faturas dos lodges. O auxiliar as arquiva por projeto, avisa as finanças <i>e devolve cada comprovante de pagamento.</i>",sub:"4 faturas arquivadas · 4 comprovantes devolvidos",log:["15:00","<b>Auxiliar de faturas</b>: 4 faturas arquivadas, finanças avisadas pelo WhatsApp, comprovantes enviados por e-mail aos lodges."],ph:[["done-msg","Confirmado","A agência de Moscou aceitou. Reservado: $28,950.",""],["approve tapped","Pagamento necessário","Pagar os 4 lodges, <b>$19,800</b> no total?","Aprovado ✓"]]},
   {t:"Maio 2027",say:"Os hóspedes chegam. O coordenador confere cada transfer e guia <i>todas as manhãs, e a viagem volta para a memória.</i>",sub:"Viagem concluída · guardada na memória",log:["Maio","<b>Coordenador</b>: todos os transfers confirmados. Viagem salva para a próxima proposta."],ph:[["done-msg","Viagem concluída","3 clientes voltaram para casa bem. A agência pede repetir a viagem em outubro.",""]]}
  ],
- hook1:"IA que tira o peso das pessoas.", hook2:"Esta página foi feita com ela.", built:"Criado por X Factor AI", fa:"Conte-nos o seu problema →", fb:"Veja como o Kevin faz"
+ fh:"Dúvidas? Escreva para nós!", built:"Criado por X Factor AI", back:"← Voltar", fb:"Escreva para nós!"
 }
 };
 
@@ -360,10 +367,10 @@ function applyStatic(){
   $("whyH").textContent=d.whyH;
   $("pick").textContent=d.pick;
   $("built").textContent=d.built;
-  $("hook1").textContent=d.hook1;
-  $("hook2").textContent=d.hook2;
-  $("fa").textContent=d.fa;
+  $("fh").textContent=d.fh;
   $("fb").textContent=d.fb;
+  $("back").textContent=d.back;
+  $("back").href="start.html?lang="+lang;
   document.querySelectorAll('.tabs button').forEach(b=>b.textContent=d.tabs[b.dataset.k]);
   $("play").textContent=timer?d.pause:d.play;
 }

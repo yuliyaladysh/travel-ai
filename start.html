@@ -31,6 +31,10 @@ body{margin:0;background:var(--ink);color:var(--text);font:400 17px/1.55 "Bricol
 .lang{display:flex;gap:6px;justify-content:flex-end;padding:14px 0 0}
 .lang button{background:transparent;border:1px solid var(--line);color:var(--soft);border-radius:20px;padding:6px 12px;font:700 12px "Space Mono",monospace;cursor:pointer}
 .lang button.on{background:var(--or);border-color:var(--or);color:#fff}
+.curs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 14px}
+.curs button{background:transparent;border:1px solid var(--line);color:var(--soft);border-radius:20px;padding:6px 12px;font:700 12px "Space Mono",monospace;cursor:pointer}
+.curs button[aria-pressed="true"]{background:var(--or);border-color:var(--or);color:#fff}
+.cnote{font-size:12px;color:var(--soft);margin:0}
 .hook{padding:26px 0 8px}
 .hook .k{font:700 12px/1 "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--or2)}
 .hook h1{font:400 clamp(36px,9vw,58px)/1.02 "Instrument Serif",Georgia,serif;margin:12px 0}
@@ -86,10 +90,12 @@ details ul{color:var(--soft);font-size:15px;padding-left:20px}
  <div class="cta"><a class="btn" id="demo" target="_blank" rel="noopener" data-t="try"></a></div>
 
  <h2 data-t="ph"></h2>
+ <div class="curs" id="curs" role="group" aria-label="Currency"></div>
  <div class="price">
   <div class="row"><div class="amt" data-t="p1a"></div><p data-t="p1"></p></div>
   <div class="row"><div class="amt" data-t="p2a"></div><p data-t="p2"></p></div>
   <div class="row"><div class="amt" data-t="p3a"></div><p data-t="p3"></p></div>
+  <p class="cnote" data-t="cnote"></p>
  </div>
  <details><summary data-t="dsum"></summary><ul id="incl"></ul></details>
 
@@ -115,8 +121,8 @@ en:{kick:'Travel AiGent by X Factor AI · for travel businesses worldwide',
  try:'▶ See it work (1 minute)',
  ph:'What it costs',
  p1a:'Free<small>10 minutes</small>',p1:'A short call: where your team\'s hours go on quotes, and what that costs you a month.',
- p2a:'from R12,500<small>setup, once</small>',p2:'Your Travel AiGent for one route. Bigger projects are priced after a call.',
- p3a:'from R1,500<small>per month</small>',p3:'Support: rate updates each season, fixes, hosting.',
+ p2a:'from {S}<small>setup, once</small>',p2:'Your Travel AiGent for one route. Bigger projects are priced after a call.',
+ cnote:'Rand is the base price. Other currencies are approximate, at an indicative rate.',p3a:'from {M}<small>per month</small>',p3:'Support: rate updates each season, fixes, hosting.',
  dsum:'What\'s included:',
  incl:['Your logo, colours and languages','Your offers and your sell rates','Tested on 20 of your past quotes before it goes live','Ready in about 10 working days','You approve everything before it reaches a client'],
  t1:'Sits on top of the system you already use',t2:'No guest names or passports needed',t3:'You stay in charge of every price',t4:'Built for you, not a template',
@@ -132,8 +138,8 @@ es:{kick:'Travel AiGent de X Factor AI · para empresas de viajes en todo el mun
  try:'▶ Véalo en acción (1 minuto)',
  ph:'Cuánto cuesta',
  p1a:'Gratis<small>10 minutos</small>',p1:'Una llamada corta: cuántas horas dedica su equipo a las cotizaciones y cuánto le cuesta al mes.',
- p2a:'desde R12.500<small>configuración, una sola vez</small>',p2:'Su Travel AiGent para una sola ruta. Los proyectos más grandes se presupuestan después de una llamada.',
- p3a:'desde R1.500<small>al mes</small>',p3:'Soporte: actualización de tarifas cada temporada, arreglos y alojamiento web.',
+ p2a:'desde {S}<small>configuración, una sola vez</small>',p2:'Su Travel AiGent para una sola ruta. Los proyectos más grandes se presupuestan después de una llamada.',
+ cnote:'El precio base está en rands. Las demás monedas son aproximadas, con un tipo de cambio orientativo.',p3a:'desde {M}<small>al mes</small>',p3:'Soporte: actualización de tarifas cada temporada, arreglos y alojamiento web.',
  dsum:'Qué incluye:',
  incl:['Su logo, sus colores y sus idiomas','Sus ofertas y sus tarifas de venta','Probado con 20 de sus cotizaciones anteriores antes de lanzarlo','Listo en unos 10 días hábiles','Usted aprueba todo antes de que llegue al cliente'],
  t1:'Funciona sobre el sistema que ya usa',t2:'No hacen falta nombres ni pasaportes de los huéspedes',t3:'Usted decide cada precio',t4:'Hecho para usted, no una plantilla',
@@ -149,8 +155,8 @@ pt:{kick:'Travel AiGent da X Factor AI · para empresas de turismo em todo o mun
  try:'▶ Veja funcionando (1 minuto)',
  ph:'Quanto custa',
  p1a:'Grátis<small>10 minutos</small>',p1:'Uma conversa rápida: quantas horas sua equipe gasta com cotações e quanto isso custa por mês.',
- p2a:'R12.500<small>a partir de · implantação, uma vez</small>',p2:'Seu Travel AiGent para uma única rota. Projetos maiores são orçados após uma conversa.',
- p3a:'R1.500<small>a partir de · por mês</small>',p3:'Suporte: atualização de tarifas a cada temporada, correções e hospedagem.',
+ p2a:'{S}<small>a partir de · implantação, uma vez</small>',p2:'Seu Travel AiGent para uma única rota. Projetos maiores são orçados após uma conversa.',
+ cnote:'O preço base está em rands. As outras moedas são aproximadas, com uma taxa de câmbio indicativa.',p3a:'{M}<small>a partir de · por mês</small>',p3:'Suporte: atualização de tarifas a cada temporada, correções e hospedagem.',
  dsum:'O que está incluído:',
  incl:['Seu logo, suas cores e seus idiomas','Suas ofertas e suas tarifas de venda','Testado com 20 das suas cotações anteriores antes de entrar no ar','Pronto em cerca de 10 dias úteis','Você aprova tudo antes de chegar ao cliente'],
  t1:'Funciona junto com o sistema que você já usa',t2:'Não precisa de nomes nem passaportes dos hóspedes',t3:'Você decide cada preço',t4:'Feito para você, não um modelo pronto',
@@ -166,8 +172,8 @@ ru:{kick:'Travel AiGent от X Factor AI · для туристических к
  try:'▶ Посмотреть, как это работает (1 минута)',
  ph:'Сколько это стоит',
  p1a:'Бесплатно<small>10 минут</small>',p1:'Короткий звонок: сколько часов ваша команда тратит на расчёты и во что это обходится в месяц.',
- p2a:'от R12 500<small>настройка, один раз</small>',p2:'Ваш Travel AiGent для одного маршрута. Стоимость более крупных проектов обсуждается.',
- p3a:'от R1 500<small>в месяц</small>',p3:'Поддержка: обновление цен каждый сезон, исправления, хостинг.',
+ p2a:'от {S}<small>настройка, один раз</small>',p2:'Ваш Travel AiGent для одного маршрута. Стоимость более крупных проектов обсуждается.',
+ cnote:'Базовая цена — в рандах. Другие валюты приблизительные, по ориентировочному курсу.',p3a:'от {M}<small>в месяц</small>',p3:'Поддержка: обновление цен каждый сезон, исправления, хостинг.',
  dsum:'Что входит:',
  incl:['Ваш логотип, цвета и языки','Ваши предложения и ваши цены','Проверка на 20 ваших прошлых расчётах до запуска','Готово примерно за 10 рабочих дней','Вы одобряете всё, прежде чем это увидит клиент'],
  t1:'Работает поверх вашей текущей системы',t2:'Не нужны имена и паспорта гостей',t3:'Каждая цена под вашим контролем',t4:'Сделано для вас, а не шаблон',
@@ -175,17 +181,56 @@ ru:{kick:'Travel AiGent от X Factor AI · для туристических к
  cl:'Хотите попробовать на текущих проектах или на своих примерах?',clb:'Забронировать короткий звонок',wa:'Написать в WhatsApp',
  fh:'Есть вопросы? Напишите нам!',fb:'Напишите нам!'}};
 const demo={en:'https://yuliyaladysh.github.io/travel-ai/dmc-demo.html?lang=en',ru:'https://yuliyaladysh.github.io/travel-ai/dmc-demo.html?lang=ru',es:'https://yuliyaladysh.github.io/travel-ai/dmc-demo.html?lang=es',pt:'https://yuliyaladysh.github.io/travel-ai/dmc-demo.html?lang=pt'};
+const RATE={ZAR:1,USD:0.06,EUR:0.054,RUB:4.7}; // fallback if the rate service is unreachable; replaced by live rates on load
+let RATE_DATE='';
+async function loadRates(){
+ try{
+  const r=await fetch('https://open.er-api.com/v6/latest/ZAR',{cache:'no-store'});
+  const j=await r.json();
+  if(j&&j.result==='success'&&j.rates){
+   ['USD','EUR','RUB'].forEach(c=>{if(j.rates[c])RATE[c]=j.rates[c]});
+   RATE_DATE=new Date(j.time_last_update_unix*1000).toISOString().slice(0,10);
+   set(document.documentElement.lang);
+  }
+ }catch(e){}
+}
+const SYM={ZAR:'R',USD:'$',EUR:'€',RUB:'₽'};
+const SEP={en:',',es:'.',pt:'.',ru:' '};
+const EURO=['AT','BE','CY','DE','EE','ES','FI','FR','GR','HR','IE','IT','LT','LU','LV','MT','NL','PT','SI','SK'];
+function regionCur(){
+ let r='';try{r=new Intl.Locale(navigator.language||'en').region||''}catch(e){r=((navigator.language||'').split('-')[1]||'').toUpperCase()}
+ if(r==='ZA')return'ZAR';if(r==='RU'||r==='BY'||r==='KZ')return'RUB';if(EURO.includes(r))return'EUR';return'USD';
+}
+let CUR;try{CUR=localStorage.getItem('cur')}catch(e){}
+if(!RATE[CUR])CUR=regionCur();
+function money(zar,l){
+ const num=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,SEP[l]||',');
+ if(CUR==='ZAR')return 'R'+num(zar);
+ const v=Math.round(zar*RATE[CUR]/10)*10;
+ return (CUR==='EUR'||CUR==='RUB')?num(v)+' '+SYM[CUR]:SYM[CUR]+num(v);
+}
 function set(l){const d=T[l];document.documentElement.lang=l;
- document.querySelectorAll('[data-t]').forEach(el=>{const v=d[el.dataset.t];if(v!==undefined)el.innerHTML=v});
+ document.querySelectorAll('[data-t]').forEach(el=>{const v=d[el.dataset.t];if(v!==undefined)el.innerHTML=v.replace(/\{S\}/g,money(12500,l)).replace(/\{M\}/g,money(1500,l))});
+ const cn=document.querySelector('.cnote');
+ if(cn&&RATE_DATE)cn.innerHTML+=' · '+({en:'Rates',ru:'Курсы',es:'Tipos',pt:'Taxas'}[l]||'Rates')+' '+RATE_DATE+' · <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Rates by Exchange Rate API</a>';
  document.getElementById('incl').innerHTML=d.incl.map(x=>`<li>${x}</li>`).join('');
  document.getElementById('demo').href=demo[l];
  const vd=document.querySelector('.vid video');if(vd)vd.muted=l!=='en';
  const SX={en:['Built by X Factor AI','Clients get your quote in minutes. You approve every quote from your phone.'],ru:['Создано X Factor AI','Клиенты получают ваше предложение по цене за минуты. Каждое предложение вы одобряете с телефона.'],es:['Creado por X Factor AI','Sus clientes reciben su cotización en minutos. Usted aprueba cada cotización desde su teléfono.'],pt:['Criado por X Factor AI','Seus clientes recebem sua cotação em minutos. Você aprova cada cotação pelo celular.']};document.querySelector('.xf-name').textContent=SX[l][0];document.querySelector('meta[name=description]').content=SX[l][1];
  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+ drawCurs();
  try{history.replaceState(null,'','?lang='+l+location.hash)}catch(e){}}
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>set(b.dataset.l));
+const CURS=['ZAR','USD','EUR','RUB'];
+function drawCurs(){
+ const box=document.getElementById('curs');
+ box.querySelectorAll('button').forEach(b=>b.remove());
+ CURS.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.setAttribute('aria-pressed',String(c===CUR));
+  b.onclick=()=>{CUR=c;try{localStorage.setItem('cur',c)}catch(e){}set(document.documentElement.lang)};box.appendChild(b)});
+}
 const q=new URLSearchParams(location.search).get('lang');
-set(q==='ru'||(!q&&/^ru|^be|^uk/i.test(navigator.language||''))?'ru':'en');
+const nav=navigator.language||'';
+document.addEventListener('DOMContentLoaded',()=>{set(T[q]?q:/^ru|^be|^uk/i.test(nav)?'ru':/^es/i.test(nav)?'es':/^pt/i.test(nav)?'pt':'en');loadRates();});
 })();
 </script>
 
