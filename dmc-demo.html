@@ -1,6 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
-<title>DMC Agent House</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Travel AiGent demo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* Layout: X Factor navy. Hero, then a live "control room": agent team | board | owner's phone, with a step ticker under it. Single dark look by choice. */
@@ -11,7 +9,7 @@
   --display:"Instrument Serif",Georgia,serif; --body:"Instrument Sans",system-ui,sans-serif; --mono:"Space Mono",ui-monospace,Consolas,monospace;
 }
 *{box-sizing:border-box}
-body{background:var(--deep);color:var(--cream);font:16px/1.55 var(--body);overflow-x:hidden}
+body{margin:0;background:var(--deep);color:var(--cream);font:16px/1.55 var(--body);overflow-x:hidden}
 .band{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .in{max-width:1180px;margin:0 auto}
 .hero{padding-block:44px 28px;background:radial-gradient(100% 90% at 85% 0%,#1d2a45 0%,var(--navy) 50%,var(--deep) 100%);position:relative;overflow:hidden}
@@ -20,6 +18,9 @@ body{background:var(--deep);color:var(--cream);font:16px/1.55 var(--body);overfl
 .hero .in{position:relative;display:grid;gap:14px}
 .brand{display:flex;gap:10px;align-items:center;font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .brand svg{width:32px;height:32px}
+.langs{display:flex;gap:6px;justify-content:flex-end}
+.langs button{padding:6px 12px;font:700 12px var(--mono)}
+.langs button.on{background:var(--orange);border-color:var(--orange);color:#fff}
 .eyebrow{font:400 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
 h1{font:400 clamp(38px,7vw,72px)/1.02 var(--display);margin:0;text-wrap:balance;max-width:18ch}
 h1 i{background:linear-gradient(100deg,var(--amber),var(--orange) 55%,var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -100,6 +101,9 @@ button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .three div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:6px}
 .three b{font:400 1.5rem/1.15 var(--display)}
 .three p{margin:0;color:#cfd4de;font-size:.95rem}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tabs button{border-radius:999px;padding:8px 14px;font:700 13px var(--mono);background:transparent;border:1px solid #33405A;color:var(--cream);cursor:pointer}
+.tabs button.on{background:var(--orange);border-color:var(--orange);color:var(--navy)}
 
 .xf-stamp{background:#101724;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
 .xf-stamp .in{max-width:880px;display:grid;gap:12px}
@@ -112,51 +116,53 @@ button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .xf-links a.alt{background:transparent;border:1px solid #33405A;color:var(--cream)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+</head>
+<body>
 
 <header class="hero band">
   <div class="glow" aria-hidden="true"></div>
   <div class="in">
     <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16" stroke="#26324a"/><path d="M8 8 L24 24" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/></svg>X Factor AI × Home of Agents</div>
-    <span class="eyebrow">A Cape Town DMC's agent team · concept wireframe</span>
-    <h1>The Moscow request came in at 21:40. <i>The proposal was ready by breakfast.</i></h1>
-    <p class="lede">A team of AI agents that works through the night for a destination management company (DMC): it reads a travel agency's request, builds the itinerary, checks the lodges, prices it and drafts the proposal in Russian. Then, once the agency says yes, it handles the lodge invoices and proofs of payment. The owner approves every step with one tap on their phone. Press play and watch one request go from the first email to guests on the ground.</p>
-    <span class="note">Example agency, prices and lodges. Agents never send, book or pay without a person's yes.</span>
+    <span class="eyebrow" id="eyebrow"></span>
+    <h1 id="h1"></h1>
+    <p class="lede" id="lede"></p>
+    <span class="note" id="note"></span>
   </div>
 </header>
 
 <section class="room band">
   <div class="in">
     <div class="controls">
-      <button class="primary" id="play" type="button">▶ Play</button>
-      <button id="next" type="button">Next step</button>
-      <button id="reset" type="button">Start again</button>
-      <span class="clock" id="clock">Mon 21:40</span>
+      <button class="primary" id="play" type="button"></button>
+      <button id="next" type="button"></button>
+      <button id="reset" type="button"></button>
+      <span class="clock" id="clock"></span>
     </div>
     <div class="grid">
       <div class="panel">
-        <p class="ph">The agent team</p>
+        <p class="ph" id="ph-team"></p>
         <div class="agents" id="agents"></div>
       </div>
       <div class="panel">
-        <p class="ph">The board</p>
+        <p class="ph" id="ph-board"></p>
         <div class="board">
-          <div class="col" id="c-new"><h4>New</h4></div>
-          <div class="col" id="c-work"><h4>Agents working</h4></div>
-          <div class="col wait" id="c-wait"><h4>Waiting for you</h4></div>
-          <div class="col done" id="c-done"><h4>Done</h4></div>
+          <div class="col" id="c-new"><h4 id="h-new"></h4></div>
+          <div class="col" id="c-work"><h4 id="h-work"></h4></div>
+          <div class="col wait" id="c-wait"><h4 id="h-wait"></h4></div>
+          <div class="col done" id="c-done"><h4 id="h-done"></h4></div>
         </div>
         <div class="feed" id="feed" aria-live="polite"></div>
       </div>
       <div class="panel phonecol">
-        <p class="ph">The owner's phone</p>
+        <p class="ph" id="ph-phone"></p>
         <div class="phone"><div class="notch"></div><div class="screen" id="screen"></div></div>
       </div>
     </div>
     <div class="ticker">
       <div><p class="say" id="say"></p><div class="dots" id="dots"></div></div>
       <div class="stats">
-        <div class="stat"><b id="hrs">0.0</b><small>Hours saved</small></div>
-        <div class="stat"><b id="taps">0</b><small>Owner taps</small></div>
+        <div class="stat"><b id="hrs">0.0</b><small id="l-hrs"></small></div>
+        <div class="stat"><b id="taps">0</b><small id="l-taps"></small></div>
       </div>
     </div>
   </div>
@@ -164,91 +170,266 @@ button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 
 <section class="why band">
   <div class="in">
-    <h2>What this means for <i>a DMC</i></h2>
-    <div class="three">
-      <div><b>No request waits</b><p>Agencies in Moscow, London or Hamburg write in their evening. Their proposal is ready before other DMCs have opened their inbox.</p></div>
-      <div><b>The back office runs itself</b><p>Lodge invoices get filed by project, finance is pinged and proof of payment goes back to the lodge. Nobody chases paperwork.</p></div>
-      <div><b>Their knowledge, kept</b><p>Past itineraries, lodge contracts, rates and photos live in one memory. It keeps working when a travel designer leaves.</p></div>
+    <h2><span id="whyH"></span> <i id="who"></i></h2>
+    <p class="ph" id="pick"></p>
+    <div class="tabs" id="tabs">
+      <button type="button" data-k="dmc" class="on">DMC</button>
+      <button type="button" data-k="agency">Travel agency</button>
+      <button type="button" data-k="lodge">Lodge</button>
+      <button type="button" data-k="activity">Activity operator</button>
     </div>
+    <div class="three" id="three"></div>
   </div>
 </section>
 
 <footer class="xf-stamp band" aria-label="Made by X Factor AI">
   <div class="in">
-    <div class="xf-row"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="xf-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16"/><path d="M8 8 L24 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/></svg>Built by X Factor AI</div>
-    <p class="xf-hook">AI that takes the weight off people. <i>This page was made with it.</i></p>
-    <div class="xf-links"><a href="https://www.x-factorai.com/">Bring me the problem →</a><a class="alt" href="https://www.linkedin.com/in/kevinfactor/">See how Kevin does it</a></div>
+    <div class="xf-row"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="xf-g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffab52"/><stop offset="100%" stop-color="#c1321a"/></linearGradient></defs><rect width="32" height="32" rx="6" fill="#050b16"/><path d="M8 8 L24 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/><path d="M24 8 L8 24" stroke="url(#xf-g)" stroke-width="5" stroke-linecap="round"/></svg><span id="built"></span></div>
+    <p class="xf-hook"><span id="hook1"></span> <i id="hook2"></i></p>
+    <div class="xf-links"><a href="https://www.x-factorai.com/" id="fa"></a><a class="alt" href="https://www.linkedin.com/in/kevinfactor/" id="fb"></a></div>
   </div>
 </footer>
 
 <script>
-const AGENTS=[
-  {id:"req",ic:"IN",name:"Request reader",job:"Reads agency requests, any language"},
-  {id:"iti",ic:"MAP",name:"Itinerary builder",job:"Starts from trips you already sold"},
-  {id:"sup",ic:"BED",name:"Lodge checker",job:"Checks availability, drafts holds"},
-  {id:"quo",ic:"$",name:"Quote + proposal",job:"Your margins, their language, right photos"},
-  {id:"chk",ic:"✓",name:"Quote checker",job:"Second pair of eyes on every quote"},
-  {id:"inv",ic:"INV",name:"Invoice clerk",job:"Files invoices, pings finance, returns proof"},
-  {id:"crd",ic:"GO",name:"Trip coordinator",job:"Transfers and guides, every morning"}
-];
-const T="Moscow agency · 3 clients";
-const STEPS=[
-  {t:"Mon 21:40",on:[],say:"A request arrives from a travel agency in Moscow, in Russian. <i>The Cape Town office closed hours ago.</i>",
-   card:["c-new",T,"Email · Russian","new"],log:["21:40","New request from a Moscow agency."],hrs:0,ph:[]},
-  {t:"Mon 21:41",on:["req"],say:"The request reader pulls out what matters: <i>3 clients, Victoria Falls and safari, 10 days, about $30,000.</i>",
-   card:["c-work",T,"Brief · 3 adults · May 2027 · $30k","sorted"],log:["21:41","<b>Request reader</b>: 3 adults, 10 days, Victoria Falls + safari, budget $30k."],hrs:.4,ph:[]},
-  {t:"Mon 21:50",on:["iti"],say:"The itinerary builder drafts a route from trips this DMC <i>has already sold to Russian clients.</i>",
-   card:["c-work",T,"Cape Town 3 · Victoria Falls 3 · Chobe 4","itinerary"],log:["21:50","<b>Itinerary</b>: 3 nights Cape Town, 3 Victoria Falls, 4 Chobe."],hrs:1.4,ph:[]},
-  {t:"Mon 22:20",on:["sup"],say:"The lodge checker writes to four lodges. One is full, <i>so it proposes the DMC's usual alternative.</i>",
-   card:["c-work",T,"3 lodges free · 1 swapped · holds drafted","lodges"],log:["22:20","<b>Lodge checker</b>: Chobe lodge full; alternative offered. Holds drafted, not sent."],hrs:2.4,ph:[]},
-  {t:"Mon 23:05",on:["quo","chk"],say:"Quote and proposal are drafted in Russian, then checked. The checker <i>adds the park fees and the Kasane transfer.</i>",
-   card:["c-work",T,"$28,950 · proposal in Russian · checked","quote"],log:["23:05","<b>Quote checker</b>: added park fees + Kasane transfer. Margin OK. Total $28,950."],hrs:4.1,ph:[]},
-  {t:"Tue 07:10",on:[],say:"At breakfast the owner gets one card: <i>proposal ready to send to the agency.</i>",
-   card:["c-wait",T,"Send proposal to agency?","your call"],log:["07:10","Approval card sent to the owner's phone."],hrs:4.1,
-   ph:[["approve","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approve"]]},
-  {t:"Tue 07:12",on:["sup"],say:"One tap. The proposal goes to Moscow and <i>the lodge holds go out.</i>",
-   card:["c-work",T,"Sent 07:12 · holds sent","sent"],log:["07:12","Proposal sent to agency. Holds sent to 4 lodges."],hrs:4.4,taps:1,
-   ph:[["approve tapped","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approved ✓"]]},
-  {t:"Thu 11:20",on:["req"],say:"The agency replies: <i>«Клиенты согласны»</i>, the clients agree. Lodge payments are queued for a yes.",
-   card:["c-wait",T,"Confirmed · pay 4 lodges?","your call"],log:["11:20","Agency confirmed. 4 lodge payments queued for approval."],hrs:4.8,taps:1,
-   ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approve"]]},
-  {t:"Thu 15:00",on:["inv"],say:"Lodge invoices arrive. The invoice clerk files them by project, pings finance, <i>and sends each proof of payment back.</i>",
-   card:["c-work",T,"4 invoices filed · 4 proofs returned","paid"],log:["15:00","<b>Invoice clerk</b>: 4 invoices filed, finance pinged on WhatsApp, proofs emailed to lodges."],hrs:6.3,taps:2,
-   ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve tapped","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approved ✓"]]},
-  {t:"May 2027",on:["crd"],say:"The guests land. The coordinator checks every transfer and guide <i>each morning, and the trip goes back into memory.</i>",
-   card:["c-done",T,"Trip complete · back in memory","done"],log:["May","<b>Coordinator</b>: all transfers confirmed. Trip saved for the next proposal."],hrs:7.5,taps:2,
-   ph:[["done-msg","Trip complete","3 clients home safe. The agency asks for a repeat in October.",""]]}
-];
+const IC=['IN','MAP','BED','$','✓','INV','GO'];
+const ON=[[],['req'],['iti'],['sup'],['quo','chk'],[],['sup'],['req'],['inv'],['crd']];
+const COL=['c-new','c-work','c-work','c-work','c-work','c-wait','c-work','c-wait','c-work','c-done'];
+const CHIP=['new','sorted','itinerary','lodges','quote','your call','sent','your call','paid','done'];
+const HRS=[0,.4,1.4,2.4,4.1,4.1,4.4,4.8,6.3,7.5];
+const TAPS=[0,0,0,0,0,0,1,1,2,2];
+const AGENT_ID=['req','iti','sup','quo','chk','inv','crd'];
+
+const L={
+en:{
+ eyebrow:"Example: a Cape Town DMC · the same team works for any travel business",
+ h1:"The Moscow request came in at 21:40. <i>The proposal was ready by breakfast.</i>",
+ lede:"A team of AI agents that works through the night for a travel business (a DMC, travel agency, lodge or activity operator): it reads a travel agency's request, builds the itinerary, checks the lodges, prices it and drafts the proposal in Russian. Then, once the agency says yes, it handles the lodge invoices and proofs of payment. The owner approves every step with one tap on their phone. Press play and watch one request go from the first email to guests on the ground.",
+ note:"Example agency, prices and lodges. Agents never send, book or pay without a person's yes.",
+ play:"▶ Play", pause:"❚❚ Pause", next:"Next step", reset:"Start again", edit:"Edit", approve:"Approve", approved:"Approved ✓",
+ team:"The agent team", board:"The board", colNew:"New", colWork:"Agents working", colWait:"Waiting for you", colDone:"Done",
+ phone:"The owner's phone", yourAgents:"Your agents", yourMsg:"1 agency request is being worked on.",
+ hrs:"Hours saved", taps:"Owner taps", whyH:"What this means for", pick:"Pick your business type",
+ party:"Moscow agency · 3 clients",
+ tabs:{dmc:"DMC",agency:"Travel agency",lodge:"Lodge",activity:"Activity operator"},
+ biz:{dmc:"a DMC",agency:"a travel agency",lodge:"a lodge",activity:"an activity operator"},
+ cards:{
+  dmc:[["No request waits","Agencies in Moscow, London or Hamburg write in their evening. Their proposal is ready before other DMCs have opened their inbox."],["The back office runs itself","Lodge invoices get filed by project, finance is pinged and proof of payment goes back to the lodge. Nobody chases paperwork."],["Their knowledge, kept","Past itineraries, lodge contracts, rates and photos live in one memory. It keeps working when a travel designer leaves."]],
+  agency:[["No client waits","Clients write in their evening. The quote is drafted, checked and ready before your consultant opens the inbox."],["Follow-ups run themselves","Quiet clients get a reminder at the right time, and visa and document checklists go out with each quote. Your consultant approves each step."],["Your know-how, kept","Past trips, supplier rates and what clients liked live in one memory. It keeps working when a consultant leaves."]],
+  lodge:[["Enquiries answered in minutes","Agents and DMCs get live rates and availability, drafted for your approval, day or night."],["Holds and invoices run themselves","Holds go out, invoices get filed by stay, and proofs of payment go back. Nobody chases paperwork."],["Your rates, your rules","Rates, seasons and minimum nights live in one place. Nothing goes out without your yes."]],
+  activity:[["Bookings from every channel","Requests from agencies, hotels and direct guests each get a reply, in their language, from one inbox."],["Availability kept in step","Slots, guides and vehicles are checked before any quote goes out."],["Payments and supplier bills, filed","Supplier bills are filed, and deposits and balances are chased automatically."]]
+ },
+ agents:[["Request reader","Reads agency requests, any language"],["Itinerary builder","Starts from trips you already sold"],["Lodge checker","Checks availability, drafts holds"],["Quote + proposal","Your margins, their language, right photos"],["Quote checker","Second pair of eyes on every quote"],["Invoice clerk","Files invoices, pings finance, returns proof"],["Trip coordinator","Transfers and guides, every morning"]],
+ steps:[
+  {t:"Mon 21:40",say:"A request arrives from a travel agency in Moscow, in Russian. <i>The Cape Town office closed hours ago.</i>",sub:"Email · Russian",log:["21:40","New request from a Moscow agency."],ph:[]},
+  {t:"Mon 21:41",say:"The request reader pulls out what matters: <i>3 clients, Victoria Falls and safari, 10 days, about $30,000.</i>",sub:"Brief · 3 adults · May 2027 · $30k",log:["21:41","<b>Request reader</b>: 3 adults, 10 days, Victoria Falls + safari, budget $30k."],ph:[]},
+  {t:"Mon 21:50",say:"The itinerary builder drafts a route from trips this DMC <i>has already sold to Russian clients.</i>",sub:"Cape Town 3 · Victoria Falls 3 · Chobe 4",log:["21:50","<b>Itinerary</b>: 3 nights Cape Town, 3 Victoria Falls, 4 Chobe."],ph:[]},
+  {t:"Mon 22:20",say:"The lodge checker writes to four lodges. One is full, <i>so it proposes the DMC's usual alternative.</i>",sub:"3 lodges free · 1 swapped · holds drafted",log:["22:20","<b>Lodge checker</b>: Chobe lodge full; alternative offered. Holds drafted, not sent."],ph:[]},
+  {t:"Mon 23:05",say:"Quote and proposal are drafted in Russian, then checked. The checker <i>adds the park fees and the Kasane transfer.</i>",sub:"$28,950 · proposal in Russian · checked",log:["23:05","<b>Quote checker</b>: added park fees + Kasane transfer. Margin OK. Total $28,950."],ph:[]},
+  {t:"Tue 07:10",say:"At breakfast the owner gets one card: <i>proposal ready to send to the agency.</i>",sub:"Send proposal to agency?",log:["07:10","Approval card sent to the owner's phone."],ph:[["approve","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approve"]]},
+  {t:"Tue 07:12",say:"One tap. The proposal goes to Moscow and <i>the lodge holds go out.</i>",sub:"Sent 07:12 · holds sent",log:["07:12","Proposal sent to agency. Holds sent to 4 lodges."],ph:[["approve tapped","Approval needed","Send <b>$28,950</b> proposal (10 days, in Russian) to the Moscow agency?","Approved ✓"]]},
+  {t:"Thu 11:20",say:"The agency replies: <i>«Клиенты согласны»</i>, the clients agree. Lodge payments are queued for a yes.",sub:"Confirmed · pay 4 lodges?",log:["11:20","Agency confirmed. 4 lodge payments queued for approval."],ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approve"]]},
+  {t:"Thu 15:00",say:"Lodge invoices arrive. The invoice clerk files them by project, pings finance, <i>and sends each proof of payment back.</i>",sub:"4 invoices filed · 4 proofs returned",log:["15:00","<b>Invoice clerk</b>: 4 invoices filed, finance pinged on WhatsApp, proofs emailed to lodges."],ph:[["done-msg","Confirmed","Moscow agency accepted. $28,950 booked.",""],["approve tapped","Payment needed","Pay 4 lodges <b>$19,800</b> in total?","Approved ✓"]]},
+  {t:"May 2027",say:"The guests land. The coordinator checks every transfer and guide <i>each morning, and the trip goes back into memory.</i>",sub:"Trip complete · back in memory",log:["May","<b>Coordinator</b>: all transfers confirmed. Trip saved for the next proposal."],ph:[["done-msg","Trip complete","3 clients home safe. The agency asks for a repeat in October.",""]]}
+ ],
+ hook1:"AI that takes the weight off people.", hook2:"This page was made with it.", built:"Built by X Factor AI", fa:"Bring me the problem →", fb:"See how Kevin does it"
+},
+ru:{
+ eyebrow:"Пример: DMC из Кейптауна · та же команда работает для любого туристического бизнеса",
+ h1:"Запрос из Москвы пришёл в 21:40. <i>Предложение было готово к завтраку.</i>",
+ lede:"Команда ИИ-агентов, которая работает ночью на туристический бизнес (DMC, турагентство, лоджа или организатор активностей): она читает запрос турагентства, строит маршрут, проверяет лоджи, считает стоимость и готовит предложение на русском. Когда агентство соглашается, агенты занимаются счетами лоджей и подтверждениями оплаты. Владелец одобряет каждый шаг одним нажатием на телефоне. Нажмите «Играть» и смотрите, как один запрос проходит путь от первого письма до гостей на месте.",
+ note:"Пример агентства, цен и лоджей. Агенты ничего не отправляют, не бронируют и не оплачивают без «да» человека.",
+ play:"▶ Играть", pause:"❚❚ Пауза", next:"Следующий шаг", reset:"Начать заново", edit:"Изменить", approve:"Одобрить", approved:"Одобрено ✓",
+ team:"Команда агентов", board:"Доска", colNew:"Новые", colWork:"Агенты работают", colWait:"Ждут вас", colDone:"Готово",
+ phone:"Телефон владельца", yourAgents:"Ваши агенты", yourMsg:"1 запрос от агентства в работе.",
+ hrs:"Часов сэкономлено", taps:"Нажатий владельца", whyH:"Что это значит для", pick:"Выберите ваш тип бизнеса",
+ party:"Московское агентство · 3 клиента",
+ tabs:{dmc:"DMC",agency:"Турагентство",lodge:"Лоджа",activity:"Организатор активностей"},
+ biz:{dmc:"DMC",agency:"турагентства",lodge:"лоджи",activity:"организатора активностей"},
+ cards:{
+  dmc:[["Запрос не ждёт","Агентства из Москвы, Лондона или Гамбурга пишут вечером. Их предложение готово раньше, чем другие DMC открыли почту."],["Бэк-офис работает сам","Счета лоджей раскладываются по проектам, финансы получают уведомление, подтверждение оплаты уходит обратно в лоджу. Никто не гоняется за бумагами."],["Знания остаются","Прошлые маршруты, договоры с лоджами, тарифы и фото лежат в одной памяти. Она продолжает работать, когда уходит travel-дизайнер."]],
+  agency:[["Клиенты не ждут","Клиенты пишут вечером. Расчёт составлен, проверен и готов до того, как консультант открыл почту."],["Напоминания делаются сами","Тихим клиентам напоминание уходит вовремя, а к каждому расчёту прикладываются чек-листы по визам и документам. Консультант одобряет каждый шаг."],["Ваш опыт сохраняется","Прошлые поездки, тарифы поставщиков и то, что понравилось клиентам, лежат в одной памяти. Она работает и когда консультант уходит."]],
+  lodge:[["Запросы — за минуты","Агентства и DMC получают актуальные тарифы и наличие мест, подготовленные для вашего одобрения, днём и ночью."],["Холды и счета делаются сами","Холды уходят, счета раскладываются по проживаниям, подтверждения оплаты возвращаются. Никто не гоняется за бумагами."],["Ваши тарифы, ваши правила","Тарифы, сезоны и минимальные ночи лежат в одном месте. Ничего не уходит без вашего «да»."]],
+  activity:[["Бронирования из всех каналов","Запросы от агентств, отелей и гостей напрямую получают ответ на их языке из одного входящего."],["Наличие всегда актуально","Слоты, гиды и транспорт проверяются до отправки любого расчёта."],["Оплаты и счета поставщиков в порядке","Счета поставщиков раскладываются по папкам, а депозиты и остатки взыскиваются автоматически."]]
+ },
+ agents:[["Читатель запросов","Читает запросы агентств, на любом языке"],["Строитель маршрутов","Начинает с поездок, которые вы уже продали"],["Проверка лоджей","Проверяет наличие, готовит холды"],["Расчёт и предложение","Ваша маржа, их язык, правильные фото"],["Проверка расчёта","Второй взгляд на каждый расчёт"],["Бухгалтер по счетам","Раскладывает счета, сообщает финансам, возвращает подтверждения"],["Координатор поездки","Трансферы и гиды, каждое утро"]],
+ steps:[
+  {t:"Пн 21:40",say:"Запрос приходит от турагентства из Москвы, на русском. <i>Офис в Кейптауне закрылся несколько часов назад.</i>",sub:"Письмо · на русском",log:["21:40","Новый запрос от московского агентства."],ph:[]},
+  {t:"Пн 21:41",say:"Читатель запросов выделяет главное: <i>3 клиента, Виктория-Фолс и сафари, 10 дней, около $30 000.</i>",sub:"Бриф · 3 взрослых · май 2027 · $30k",log:["21:41","<b>Читатель запросов</b>: 3 взрослых, 10 дней, Виктория-Фолс + сафари, бюджет $30k."],ph:[]},
+  {t:"Пн 21:50",say:"Строитель маршрутов составляет путь из поездок, которые это DMC <i>уже продавал русским клиентам.</i>",sub:"Кейптаун 3 · Виктория-Фолс 3 · Чобе 4",log:["21:50","<b>Маршрут</b>: 3 ночи Кейптаун, 3 Виктория-Фолс, 4 Чобе."],ph:[]},
+  {t:"Пн 22:20",say:"Проверка лоджей пишет четырём лоджам. Один занят, <i>поэтому предлагает обычную альтернативу DMC.</i>",sub:"3 лоджи свободны · 1 заменена · холды подготовлены",log:["22:20","<b>Проверка лоджей</b>: лоджа в Чобе занята; предложена альтернатива. Холды подготовлены, не отправлены."],ph:[]},
+  {t:"Пн 23:05",say:"Расчёт и предложение готовятся на русском, затем проверяются. Проверка <i>добавляет сборы за парки и трансфер в Касане.</i>",sub:"$28 950 · предложение на русском · проверено",log:["23:05","<b>Проверка расчёта</b>: добавлены сборы за парки и трансфер в Касане. Маржа в норме. Итого $28 950."],ph:[]},
+  {t:"Вт 07:10",say:"За завтраком владелец получает одну карточку: <i>предложение готово к отправке агентству.</i>",sub:"Отправить предложение агентству?",log:["07:10","Карточка одобрения отправлена на телефон владельца."],ph:[["approve","Нужно одобрение","Отправить предложение на <b>$28 950</b> (10 дней, на русском) московскому агентству?","Одобрить"]]},
+  {t:"Вт 07:12",say:"Одно нажатие. Предложение уходит в Москву, <i>и холды лоджей отправляются.</i>",sub:"Отправлено 07:12 · холды отправлены",log:["07:12","Предложение отправлено агентству. Холды отправлены 4 лоджам."],ph:[["approve tapped","Нужно одобрение","Отправить предложение на <b>$28 950</b> (10 дней, на русском) московскому агентству?","Одобрено ✓"]]},
+  {t:"Чт 11:20",say:"Агентство отвечает: <i>«Клиенты согласны»</i>, клиенты согласны. Оплаты лоджам ждут вашего «да».",sub:"Подтверждено · оплатить 4 лоджам?",log:["11:20","Агентство подтвердило. 4 оплаты лоджам ждут одобрения."],ph:[["done-msg","Подтверждено","Московское агентство приняло. Забронировано $28 950.",""],["approve","Нужна оплата","Оплатить 4 лоджам <b>$19 800</b> всего?","Одобрить"]]},
+  {t:"Чт 15:00",say:"Приходят счета лоджей. Бухгалтер раскладывает их по проектам, сообщает финансам <i>и отправляет каждое подтверждение оплаты обратно.</i>",sub:"4 счёта разложены · 4 подтверждения отправлены",log:["15:00","<b>Бухгалтер</b>: 4 счёта разложены, финансы уведомлены в WhatsApp, подтверждения отправлены лоджам по почте."],ph:[["done-msg","Подтверждено","Московское агентство приняло. Забронировано $28 950.",""],["approve tapped","Нужна оплата","Оплатить 4 лоджам <b>$19 800</b> всего?","Одобрено ✓"]]},
+  {t:"Май 2027",say:"Гости прилетели. Координатор проверяет каждый трансфер и гида <i>каждое утро, а поездка возвращается в память.</i>",sub:"Поездка завершена · сохранена в памяти",log:["Май","<b>Координатор</b>: все трансферы подтверждены. Поездка сохранена для следующего предложения."],ph:[["done-msg","Поездка завершена","3 клиента благополучно дома. Агентство просит повторить поездку в октябре.",""]]}
+ ],
+ hook1:"ИИ, который снимает нагрузку с людей.", hook2:"Эта страница сделана с его помощью.", built:"Создано X Factor AI", fa:"Расскажите вашу задачу →", fb:"Как это делает Kevin"
+},
+es:{
+ eyebrow:"Ejemplo: un DMC de Ciudad del Cabo · el mismo equipo sirve a cualquier empresa de viajes",
+ h1:"La solicitud de Moscú llegó a las 21:40. <i>La propuesta estaba lista para el desayuno.</i>",
+ lede:"Un equipo de agentes de IA que trabaja de noche para una empresa de viajes (un DMC, agencia de viajes, lodge u operador de actividades): lee la solicitud de una agencia, arma el itinerario, revisa los lodges, pone precio y redacta la propuesta en ruso. Luego, cuando la agencia dice que sí, se encarga de las facturas de los lodges y de los comprobantes de pago. El dueño aprueba cada paso con un toque en su teléfono. Pulse Reproducir y vea cómo una solicitud pasa del primer correo a los huéspedes en destino.",
+ note:"Ejemplo de agencia, precios y lodges. Los agentes nunca envían, reservan ni pagan sin el sí de una persona.",
+ play:"▶ Reproducir", pause:"❚❚ Pausa", next:"Siguiente paso", reset:"Empezar de nuevo", edit:"Editar", approve:"Aprobar", approved:"Aprobado ✓",
+ team:"El equipo de agentes", board:"El tablero", colNew:"Nuevos", colWork:"Agentes trabajando", colWait:"Esperando a usted", colDone:"Listo",
+ phone:"El teléfono del dueño", yourAgents:"Sus agentes", yourMsg:"Una solicitud de agencia está en curso.",
+ hrs:"Horas ahorradas", taps:"Toques del dueño", whyH:"Qué significa para", pick:"Elija su tipo de negocio",
+ party:"Agencia de Moscú · 3 clientes",
+ tabs:{dmc:"DMC",agency:"Agencia de viajes",lodge:"Lodge",activity:"Operador de actividades"},
+ biz:{dmc:"un DMC",agency:"una agencia de viajes",lodge:"un lodge",activity:"un operador de actividades"},
+ cards:{
+  dmc:[["Ninguna solicitud espera","Las agencias de Moscú, Londres o Hamburgo escriben por la noche. Su propuesta está lista antes de que otros DMC abran el correo."],["La oficina trabaja sola","Las facturas de los lodges se archivan por proyecto, se avisa a finanzas y el comprobante de pago vuelve al lodge. Nadie persigue papeles."],["Su conocimiento, guardado","Itinerarios anteriores, contratos con lodges, tarifas y fotos viven en una sola memoria. Sigue funcionando cuando un diseñador de viajes se va."]],
+  agency:[["Ningún cliente espera","Los clientes escriben por la noche. La cotización está redactada, revisada y lista antes de que su asesor abra el correo."],["El seguimiento se hace solo","Los clientes callados reciben un recordatorio a tiempo, y las listas de visados y documentos salen con cada cotización. Su asesor aprueba cada paso."],["Su experiencia, guardada","Viajes anteriores, tarifas de proveedores y lo que gustó a los clientes viven en una memoria. Sigue funcionando cuando un asesor se va."]],
+  lodge:[["Consultas respondidas en minutos","Agencias y DMC reciben tarifas y disponibilidad al día, preparadas para su aprobación, de día y de noche."],["Reservas y facturas, solas","Las reservas salen, las facturas se archivan por estancia y los comprobantes de pago vuelven. Nadie persigue papeles."],["Sus tarifas, sus reglas","Tarifas, temporadas y noches mínimas en un solo lugar. Nada sale sin su sí."]],
+  activity:[["Reservas de todos los canales","Las solicitudes de agencias, hoteles y huéspedes directos reciben respuesta en su idioma, desde una sola bandeja."],["Disponibilidad siempre al día","Horarios, guías y vehículos se revisan antes de enviar cualquier cotización."],["Pagos y facturas de proveedores, archivados","Las facturas de proveedores se archivan, y los depósitos y saldos se cobran automáticamente."]]
+ },
+ agents:[["Lector de solicitudes","Lee solicitudes de agencias, en cualquier idioma"],["Diseñador de itinerarios","Parte de viajes que ya vendió"],["Revisor de lodges","Revisa disponibilidad, prepara reservas provisionales"],["Cotización y propuesta","Su margen, su idioma, las fotos correctas"],["Revisor de cotizaciones","Un segundo par de ojos en cada cotización"],["Auxiliar de facturas","Archiva facturas, avisa a finanzas, devuelve comprobantes"],["Coordinador de viaje","Traslados y guías, cada mañana"]],
+ steps:[
+  {t:"Lun 21:40",say:"Llega una solicitud de una agencia de viajes de Moscú, en ruso. <i>La oficina de Ciudad del Cabo cerró hace horas.</i>",sub:"Correo · en ruso",log:["21:40","Nueva solicitud de una agencia de Moscú."],ph:[]},
+  {t:"Lun 21:41",say:"El lector de solicitudes extrae lo importante: <i>3 clientes, Cataratas Victoria y safari, 10 días, unos $30,000.</i>",sub:"Resumen · 3 adultos · mayo 2027 · $30k",log:["21:41","<b>Lector de solicitudes</b>: 3 adultos, 10 días, Cataratas Victoria + safari, presupuesto $30k."],ph:[]},
+  {t:"Lun 21:50",say:"El diseñador de itinerarios arma una ruta a partir de viajes que este DMC <i>ya vendió a clientes rusos.</i>",sub:"Ciudad del Cabo 3 · Cataratas Victoria 3 · Chobe 4",log:["21:50","<b>Itinerario</b>: 3 noches en Ciudad del Cabo, 3 en Cataratas Victoria, 4 en Chobe."],ph:[]},
+  {t:"Lun 22:20",say:"El revisor de lodges escribe a cuatro lodges. Uno está completo, <i>así que propone la alternativa habitual del DMC.</i>",sub:"3 lodges libres · 1 cambiado · reservas provisionales preparadas",log:["22:20","<b>Revisor de lodges</b>: lodge de Chobe completo; se ofreció alternativa. Reservas provisionales preparadas, no enviadas."],ph:[]},
+  {t:"Lun 23:05",say:"La cotización y la propuesta se redactan en ruso y luego se revisan. El revisor <i>agrega las tasas de parques y el traslado a Kasane.</i>",sub:"$28,950 · propuesta en ruso · revisada",log:["23:05","<b>Revisor de cotizaciones</b>: agregadas tasas de parques + traslado a Kasane. Margen correcto. Total $28,950."],ph:[]},
+  {t:"Mar 07:10",say:"Al desayuno, el dueño recibe una tarjeta: <i>propuesta lista para enviar a la agencia.</i>",sub:"¿Enviar la propuesta a la agencia?",log:["07:10","Tarjeta de aprobación enviada al teléfono del dueño."],ph:[["approve","Necesita aprobación","¿Enviar la propuesta de <b>$28,950</b> (10 días, en ruso) a la agencia de Moscú?","Aprobar"]]},
+  {t:"Mar 07:12",say:"Un toque. La propuesta va a Moscú y <i>salen las reservas provisionales de los lodges.</i>",sub:"Enviada 07:12 · reservas enviadas",log:["07:12","Propuesta enviada a la agencia. Reservas provisionales enviadas a 4 lodges."],ph:[["approve tapped","Necesita aprobación","¿Enviar la propuesta de <b>$28,950</b> (10 días, en ruso) a la agencia de Moscú?","Aprobado ✓"]]},
+  {t:"Jue 11:20",say:"La agencia responde: <i>«Клиенты согласны»</i>, los clientes están de acuerdo. Los pagos a los lodges quedan en espera de su sí.",sub:"Confirmado · ¿pagar a 4 lodges?",log:["11:20","La agencia confirmó. 4 pagos a lodges en espera de aprobación."],ph:[["done-msg","Confirmado","La agencia de Moscú aceptó. Reservado: $28,950.",""],["approve","Pago pendiente","¿Pagar a los 4 lodges <b>$19,800</b> en total?","Aprobar"]]},
+  {t:"Jue 15:00",say:"Llegan las facturas de los lodges. El auxiliar las archiva por proyecto, avisa a finanzas <i>y devuelve cada comprobante de pago.</i>",sub:"4 facturas archivadas · 4 comprobantes devueltos",log:["15:00","<b>Auxiliar de facturas</b>: 4 facturas archivadas, finanzas avisadas por WhatsApp, comprobantes enviados por correo a los lodges."],ph:[["done-msg","Confirmado","La agencia de Moscú aceptó. Reservado: $28,950.",""],["approve tapped","Pago pendiente","¿Pagar a los 4 lodges <b>$19,800</b> en total?","Aprobado ✓"]]},
+  {t:"Mayo 2027",say:"Los huéspedes llegan. El coordinador revisa cada traslado y guía <i>cada mañana, y el viaje vuelve a la memoria.</i>",sub:"Viaje completado · guardado en memoria",log:["Mayo","<b>Coordinador</b>: todos los traslados confirmados. Viaje guardado para la próxima propuesta."],ph:[["done-msg","Viaje completado","3 clientes llegaron bien a casa. La agencia pide repetir el viaje en octubre.",""]]}
+ ],
+ hook1:"IA que quita peso de las personas.", hook2:"Esta página se hizo con ella.", built:"Creado por X Factor AI", fa:"Cuénteme su problema →", fb:"Vea cómo lo hace Kevin"
+},
+pt:{
+ eyebrow:"Exemplo: um DMC da Cidade do Cabo · a mesma equipe atende qualquer empresa de turismo",
+ h1:"O pedido de Moscou chegou às 21:40. <i>A proposta estava pronta na hora do café.</i>",
+ lede:"Uma equipe de agentes de IA que trabalha durante a noite para uma empresa de turismo (um DMC, agência de viagens, lodge ou operador de atividades): lê o pedido de uma agência, monta o roteiro, verifica os lodges, precifica e redige a proposta em russo. Depois que a agência confirma, cuida das faturas dos lodges e dos comprovantes de pagamento. O dono aprova cada etapa com um toque no celular. Aperte play e veja um pedido sair do primeiro e-mail até os hóspedes no destino.",
+ note:"Exemplo de agência, preços e lodges. Os agentes nunca enviam, reservam nem pagam sem o sim de uma pessoa.",
+ play:"▶ Reproduzir", pause:"❚❚ Pausa", next:"Próximo passo", reset:"Começar de novo", edit:"Editar", approve:"Aprovar", approved:"Aprovado ✓",
+ team:"A equipe de agentes", board:"O quadro", colNew:"Novos", colWork:"Agentes trabalhando", colWait:"Esperando você", colDone:"Pronto",
+ phone:"O celular do dono", yourAgents:"Seus agentes", yourMsg:"Um pedido de agência está em andamento.",
+ hrs:"Horas economizadas", taps:"Toques do dono", whyH:"O que isso significa para", pick:"Escolha o seu tipo de negócio",
+ party:"Agência de Moscou · 3 clientes",
+ tabs:{dmc:"DMC",agency:"Agência de viagens",lodge:"Lodge",activity:"Operador de atividades"},
+ biz:{dmc:"um DMC",agency:"uma agência de viagens",lodge:"um lodge",activity:"um operador de atividades"},
+ cards:{
+  dmc:[["Nenhum pedido espera","Agências de Moscou, Londres ou Hamburgo escrevem à noite. A proposta fica pronta antes de outros DMCs abrirem a caixa de entrada."],["O back office roda sozinho","As faturas dos lodges são arquivadas por projeto, as finanças são avisadas e o comprovante de pagamento volta ao lodge. Ninguém corre atrás de papel."],["O conhecimento fica guardado","Roteiros anteriores, contratos com lodges, tarifas e fotos ficam em uma só memória. Ela continua funcionando quando um designer de viagens sai."]],
+  agency:[["Nenhum cliente espera","Os clientes escrevem à noite. A cotação está redigida, revisada e pronta antes de o seu consultor abrir o e-mail."],["O acompanhamento acontece sozinho","Clientes que sumiram recebem um lembrete na hora certa, e as listas de vistos e documentos saem com cada cotação. Seu consultor aprova cada etapa."],["Seu conhecimento fica guardado","Viagens anteriores, tarifas de fornecedores e o que os clientes gostaram ficam em uma memória. Ela continua funcionando quando um consultor sai."]],
+  lodge:[["Consultas respondidas em minutos","Agências e DMCs recebem tarifas e disponibilidade atualizadas, preparadas para a sua aprovação, de dia e de noite."],["Reservas e faturas se resolvem sozinhas","As reservas são enviadas, as faturas são arquivadas por estadia e os comprovantes de pagamento voltam. Ninguém corre atrás de papel."],["Suas tarifas, suas regras","Tarifas, temporadas e noites mínimas em um só lugar. Nada sai sem o seu sim."]],
+  activity:[["Reservas de todos os canais","Pedidos de agências, hotéis e hóspedes diretos recebem resposta no idioma deles, a partir de uma única caixa de entrada."],["Disponibilidade sempre em dia","Horários, guias e veículos são conferidos antes de qualquer cotação sair."],["Pagamentos e contas de fornecedores em ordem","As contas dos fornecedores são arquivadas, e os sinais e saldos são cobrados automaticamente."]]
+ },
+ agents:[["Leitor de pedidos","Lê pedidos de agências, em qualquer idioma"],["Montador de roteiros","Começa de viagens que você já vendeu"],["Verificador de lodges","Verifica disponibilidade, prepara reservas provisórias"],["Cotação e proposta","Sua margem, o idioma deles, as fotos certas"],["Revisor de cotações","Um segundo olhar em cada cotação"],["Auxiliar de faturas","Arquiva faturas, avisa as finanças, devolve comprovantes"],["Coordenador de viagem","Transfers e guias, todas as manhãs"]],
+ steps:[
+  {t:"Seg 21:40",say:"Chega um pedido de uma agência de viagens de Moscou, em russo. <i>O escritório da Cidade do Cabo fechou horas atrás.</i>",sub:"E-mail · em russo",log:["21:40","Novo pedido de uma agência de Moscou."],ph:[]},
+  {t:"Seg 21:41",say:"O leitor de pedidos extrai o essencial: <i>3 clientes, Cataratas Vitória e safári, 10 dias, cerca de $30.000.</i>",sub:"Resumo · 3 adultos · maio 2027 · $30k",log:["21:41","<b>Leitor de pedidos</b>: 3 adultos, 10 dias, Cataratas Vitória + safári, orçamento $30k."],ph:[]},
+  {t:"Seg 21:50",say:"O montador de roteiros cria a rota a partir de viagens que este DMC <i>já vendeu a clientes russos.</i>",sub:"Cidade do Cabo 3 · Cataratas Vitória 3 · Chobe 4",log:["21:50","<b>Roteiro</b>: 3 noites na Cidade do Cabo, 3 nas Cataratas Vitória, 4 em Chobe."],ph:[]},
+  {t:"Seg 22:20",say:"O verificador de lodges escreve a quatro lodges. Um está lotado, <i>então propõe a alternativa habitual do DMC.</i>",sub:"3 lodges livres · 1 trocado · reservas provisórias preparadas",log:["22:20","<b>Verificador de lodges</b>: lodge de Chobe lotado; alternativa oferecida. Reservas provisórias preparadas, não enviadas."],ph:[]},
+  {t:"Seg 23:05",say:"A cotação e a proposta são redigidas em russo e depois revisadas. O revisor <i>inclui as taxas de parques e o transfer para Kasane.</i>",sub:"$28,950 · proposta em russo · revisada",log:["23:05","<b>Revisor de cotações</b>: incluídas taxas de parques + transfer para Kasane. Margem OK. Total $28,950."],ph:[]},
+  {t:"Ter 07:10",say:"No café da manhã, o dono recebe um cartão: <i>proposta pronta para enviar à agência.</i>",sub:"Enviar a proposta à agência?",log:["07:10","Cartão de aprovação enviado ao celular do dono."],ph:[["approve","Precisa de aprovação","Enviar a proposta de <b>$28,950</b> (10 dias, em russo) à agência de Moscou?","Aprovar"]]},
+  {t:"Ter 07:12",say:"Um toque. A proposta vai para Moscou e <i>as reservas provisórias dos lodges são enviadas.</i>",sub:"Enviada 07:12 · reservas enviadas",log:["07:12","Proposta enviada à agência. Reservas provisórias enviadas a 4 lodges."],ph:[["approve tapped","Precisa de aprovação","Enviar a proposta de <b>$28,950</b> (10 dias, em russo) à agência de Moscou?","Aprovado ✓"]]},
+  {t:"Qui 11:20",say:"A agência responde: <i>«Клиенты согласны»</i>, os clientes concordam. Os pagamentos aos lodges ficam na fila aguardando o seu sim.",sub:"Confirmado · pagar 4 lodges?",log:["11:20","A agência confirmou. 4 pagamentos a lodges na fila para aprovação."],ph:[["done-msg","Confirmado","A agência de Moscou aceitou. Reservado: $28,950.",""],["approve","Pagamento necessário","Pagar os 4 lodges, <b>$19,800</b> no total?","Aprovar"]]},
+  {t:"Qui 15:00",say:"Chegam as faturas dos lodges. O auxiliar as arquiva por projeto, avisa as finanças <i>e devolve cada comprovante de pagamento.</i>",sub:"4 faturas arquivadas · 4 comprovantes devolvidos",log:["15:00","<b>Auxiliar de faturas</b>: 4 faturas arquivadas, finanças avisadas pelo WhatsApp, comprovantes enviados por e-mail aos lodges."],ph:[["done-msg","Confirmado","A agência de Moscou aceitou. Reservado: $28,950.",""],["approve tapped","Pagamento necessário","Pagar os 4 lodges, <b>$19,800</b> no total?","Aprovado ✓"]]},
+  {t:"Maio 2027",say:"Os hóspedes chegam. O coordenador confere cada transfer e guia <i>todas as manhãs, e a viagem volta para a memória.</i>",sub:"Viagem concluída · guardada na memória",log:["Maio","<b>Coordenador</b>: todos os transfers confirmados. Viagem salva para a próxima proposta."],ph:[["done-msg","Viagem concluída","3 clientes voltaram para casa bem. A agência pede repetir a viagem em outubro.",""]]}
+ ],
+ hook1:"IA que tira o peso das pessoas.", hook2:"Esta página foi feita com ela.", built:"Criado por X Factor AI", fa:"Conte-nos o seu problema →", fb:"Veja como o Kevin faz"
+}
+};
+
+const qlang=new URLSearchParams(location.search).get('lang');
+let lang=(qlang && L[qlang])?qlang:'en', cur='dmc', i=-1, timer=null;
 const $=id=>document.getElementById(id);
-let i=-1,timer=null;
-function drawAgents(on){$("agents").innerHTML=AGENTS.map(a=>`<div class="agent${on.includes(a.id)?" on":""}"><span class="ic">${a.ic}</span><div><b>${a.name}</b><small>${a.job}</small></div></div>`).join("")}
-function drawDots(){$("dots").innerHTML=STEPS.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}
+const S=()=>L[lang];
+
+function applyStatic(){
+  const d=S();
+  document.documentElement.lang=lang;
+  $("eyebrow").textContent=d.eyebrow;
+  $("h1").innerHTML=d.h1;
+  $("lede").textContent=d.lede;
+  $("note").textContent=d.note;
+  $("next").textContent=d.next;
+  $("reset").textContent=d.reset;
+  $("ph-team").textContent=d.team;
+  $("ph-board").textContent=d.board;
+  $("h-new").textContent=d.colNew;
+  $("h-work").textContent=d.colWork;
+  $("h-wait").textContent=d.colWait;
+  $("h-done").textContent=d.colDone;
+  $("ph-phone").textContent=d.phone;
+  $("l-hrs").textContent=d.hrs;
+  $("l-taps").textContent=d.taps;
+  $("whyH").textContent=d.whyH;
+  $("pick").textContent=d.pick;
+  $("built").textContent=d.built;
+  $("hook1").textContent=d.hook1;
+  $("hook2").textContent=d.hook2;
+  $("fa").textContent=d.fa;
+  $("fb").textContent=d.fb;
+  document.querySelectorAll('.tabs button').forEach(b=>b.textContent=d.tabs[b.dataset.k]);
+  $("play").textContent=timer?d.pause:d.play;
+}
+
+function drawAgents(on){
+  const d=S();
+  $("agents").innerHTML=d.agents.map((a,k)=>`<div class="agent${on.includes(AGENT_ID[k])?" on":""}"><span class="ic">${IC[k]}</span><div><b>${a[0]}</b><small>${a[1]}</small></div></div>`).join("");
+}
+function drawDots(){$("dots").innerHTML=S().steps.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}
 function phone(list){
-  let h=`<div class="msg"><span class="from">Your agents</span>1 agency request is being worked on.</div>`;
+  const d=S();
+  let h=`<div class="msg"><span class="from">${d.yourAgents}</span>${d.yourMsg}</div>`;
   (list||[]).forEach(([cls,from,txt,btn])=>{
-    h+=`<div class="msg ${cls}"><span class="from">${from}</span>${txt}${btn?`<div class="btns"><span class="yes">${btn}</span><span>Edit</span></div>`:""}</div>`;
+    h+=`<div class="msg ${cls}"><span class="from">${from}</span>${txt}${btn?`<div class="btns"><span class="yes">${btn}</span><span>${d.edit}</span></div>`:""}</div>`;
   });
   $("screen").innerHTML=h;
 }
 function show(k){
-  i=k;const st=STEPS[k];
-  $("clock").textContent=st.t;$("say").innerHTML=st.say;
-  ["c-new","c-work","c-wait","c-done"].forEach(c=>{const col=$(c);col.querySelectorAll(".card").forEach(x=>x.remove())});
-  const [col,title,sub,chip]=st.card;
-  $(col).insertAdjacentHTML("beforeend",`<div class="card"><span class="chip">${chip}</span><b>${title}</b><small>${sub}</small></div>`);
-  drawAgents(st.on);
+  const d=S(); i=k; const st=d.steps[k];
+  $("clock").textContent=st.t; $("say").innerHTML=st.say;
+  ["c-new","c-work","c-wait","c-done"].forEach(c=>$(c).querySelectorAll(".card").forEach(x=>x.remove()));
+  $(COL[k]).insertAdjacentHTML("beforeend",`<div class="card"><span class="chip">${CHIP[k]}</span><b>${d.party}</b><small>${st.sub}</small></div>`);
+  drawAgents(ON[k]);
   $("feed").insertAdjacentHTML("afterbegin",`<div class="line"><span>${st.log[0]}</span><div>${st.log[1]}</div></div>`);
-  $("hrs").textContent=st.hrs.toFixed(1);$("taps").textContent=st.taps||STEPS.slice(0,k+1).reduce((m,s)=>Math.max(m,s.taps||0),0);
+  const taps=TAPS[k]||Math.max(0,...TAPS.slice(0,k));
+  $("hrs").textContent=HRS[k].toFixed(1);
+  $("taps").textContent=taps;
   phone(st.ph);
   drawDots();
 }
-function stop(){clearInterval(timer);timer=null;$("play").textContent="▶ Play"}
-function next(){if(i<STEPS.length-1)show(i+1);else stop()}
+function stop(){clearInterval(timer);timer=null;$("play").textContent=S().play}
+function next(){if(i<S().steps.length-1)show(i+1);else stop()}
 function reset(){stop();$("feed").innerHTML="";show(0)}
-$("play").onclick=()=>{if(timer){stop();return}if(i>=STEPS.length-1)reset();$("play").textContent="❚❚ Pause";timer=setInterval(next,3200)};
+function rebuild(){
+  // re-draw the current point of the story in the selected language, keeping the position
+  if(i<0){applyStatic();drawAgents([]);return}
+  const k=i; $("feed").innerHTML=""; for(let s=0;s<=k;s++) show(s);
+}
+function sector(k){
+  cur=k;
+  const d=S();
+  $("who").textContent=d.biz[k];
+  $("three").innerHTML=d.cards[k].map(c=>`<div><b>${c[0]}</b><p>${c[1]}</p></div>`).join("");
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+}
+function setLang(l){
+  lang=l;
+  const wasPlaying=!!timer;
+  applyStatic();
+  sector(cur);
+  rebuild();
+  if(i<0) reset();
+  if(wasPlaying) $("play").textContent=S().pause;
+}
+
+$("play").onclick=()=>{
+  if(timer){stop();return}
+  if(i>=S().steps.length-1)reset();
+  $("play").textContent=S().pause;
+  timer=setInterval(next,3200);
+};
 $("next").onclick=()=>{stop();next()};
 $("reset").onclick=reset;
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>sector(b.dataset.k)));
+applyStatic();
+sector('dmc');
 reset();
 </script>
-
 </body></html>
